@@ -6,7 +6,7 @@ var map = new mapboxgl.Map({
 	container: 'map',
 	minZoom: 9,
 	maxZoom: 18,
-	style: 'mapbox://styles/lzcamuti/cj8xz5wvehic92rntgckzg1z8' 
+	style: 'mapbox://styles/lzcamuti/cj8ykwxj6i2eg2rntpcl7w1i1' 
 });
 
 (function(d, s, id) {
@@ -170,6 +170,36 @@ for (var i = 0; i < toggleableLayerIds.length; i++) {
     layers.appendChild(link);
 }
 
+var toggleableLayerIds = [ 'Historic Vegetation' ];
+
+for (var i = 0; i < toggleableLayerIds.length; i++) {
+    var id = toggleableLayerIds[i];
+
+    var link = document.createElement('a');
+    link.href = '#';
+    link.className = 'active';
+    link.textContent = id;
+
+    link.onclick = function (e) {
+        var clickedLayer = this.textContent;
+        e.preventDefault();
+        e.stopPropagation();
+
+        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+        if (visibility === 'visible') {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+            this.className = '';
+        } else {
+            this.className = 'active';
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+        }
+    };
+
+    var layers = document.getElementById('menu');
+    layers.appendChild(link);
+}
+
 var toggleableLayerIds = [ 'Parks' ];
 
 for (var i = 0; i < toggleableLayerIds.length; i++) {
@@ -199,10 +229,29 @@ for (var i = 0; i < toggleableLayerIds.length; i++) {
     var layers = document.getElementById('menu');
     layers.appendChild(link);
 
-}
-   map.on('click', function(e) {
+
+
+
+// POP-UPS
+
+
+  // replace contents of info window when user hovers on a state
+  map.on('mousemove', function(e) { // event listener to do some code when the mouse moves
+
+    var parks = map.queryRenderedFeatures(e.point, {
+      layers: ['Historic Vegetation']  // replace 'cville-parks' with the name of your layer, if using a different layer
+    });
+
+    if (parks.length > 0) { // if statement to make sure the following code is only added to the info window if the mouse moves over a state
+      document.getElementById('info-window-body').innerHTML = '<h3><strong>' + parks[0].properties.Name + '</strong></h3><p>' + parks[0].properties.Conditions + '</p>';
+    } else {
+      document.getElementById('info-window-body').innerHTML = '<p>Hover Over a Number to Get More Information on the Region</p>';
+    }
+  
+  });
+map.on('click', function(e) {
       var stops = map.queryRenderedFeatures(e.point, {
-        layers: ['veg'] // replace this with the name of the layer
+        layers: ['Historic Vegetation'] // replace this with the name of the layer
       });
 
       console.log(stops);
@@ -223,14 +272,19 @@ for (var i = 0; i < toggleableLayerIds.length; i++) {
         offset: [0, -15] // A pixel offset from the centerpoint of the feature. Can be a single number, an [x,y] coordinate, or an object of [x,y] coordinates specifying an offset for each of the different anchor options (e.g. 'top' and 'bottom'). Negative numbers indicate left and up.
       });
 
+      // Set the popup location based on each feature
+      popup.setLngLat(stop.geometry.coordinates);
+
       // Set the contents of the popup window
-      popup.setHTML('<h3>NAME:' + stop.properties.Name // 'stop_id' field of the dataset will become the title of the popup
+      popup.setHTML('<h3>Stop ID: ' + stop.properties.Name   // 'stop_id' field of the dataset will become the title of the popup
                            + '</h3><p>' + stop.properties.Conditions // 'stop_name' field of the dataset will become the body of the popup
                            + '</p>');
 
       // Add the popup to the map
       popup.addTo(map);  // replace "map" with the name of the variable in line 28, if different
     });
+
+};
 
    // Show "About this Map" modal when clicking on button
 $('#about').on('click', function() {
