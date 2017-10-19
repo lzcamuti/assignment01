@@ -5,7 +5,7 @@ var map = new mapboxgl.Map({
 	minZoom: 12.7,
 	maxZoom: 18,
 	pitchWithRotate: false,
-	style: 'mapbox://styles/lzcamuti/cj8ykwxj6i2eg2rntpcl7w1i1' 
+	style: 'mapbox://styles/lzcamuti/cj8ynio1pi4vq2rpqzlze1s4d' 
 });
 
 // PARKS - INFO WINDOW CHANGES ON HOVER

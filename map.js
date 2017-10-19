@@ -6,7 +6,7 @@ var map = new mapboxgl.Map({
 	container: 'map',
 	minZoom: 9,
 	maxZoom: 18,
-	style: 'mapbox://styles/lzcamuti/cj8ykwxj6i2eg2rntpcl7w1i1' 
+	style: 'mapbox://styles/lzcamuti/cj8ynio1pi4vq2rpqzlze1s4d' 
 });
 
 (function(d, s, id) {
@@ -235,26 +235,10 @@ for (var i = 0; i < toggleableLayerIds.length; i++) {
 // POP-UPS
 
 
-  // replace contents of info window when user hovers on a state
-  map.on('mousemove', function(e) { // event listener to do some code when the mouse moves
-
-    var parks = map.queryRenderedFeatures(e.point, {
-      layers: ['Historic Vegetation']  // replace 'cville-parks' with the name of your layer, if using a different layer
-    });
-
-    if (parks.length > 0) { // if statement to make sure the following code is only added to the info window if the mouse moves over a state
-      document.getElementById('info-window-body').innerHTML = '<h3><strong>' + parks[0].properties.Name + '</strong></h3><p>' + parks[0].properties.Conditions + '</p>';
-    } else {
-      document.getElementById('info-window-body').innerHTML = '<p>Hover Over a Number to Get More Information on the Region</p>';
-    }
-  
-  });
 map.on('click', function(e) {
       var stops = map.queryRenderedFeatures(e.point, {
         layers: ['Historic Vegetation'] // replace this with the name of the layer
       });
-
-      console.log(stops);
 
       // if the layer is empty, this if statement will return NULL, exiting the function (no popups created) -- this is a failsafe to avoid endless loops
       if (!stops.length) {
@@ -273,10 +257,10 @@ map.on('click', function(e) {
       });
 
       // Set the popup location based on each feature
-      popup.setLngLat(stop.geometry.coordinates);
+      popup.setLngLat(e.lngLat);
 
       // Set the contents of the popup window
-      popup.setHTML('<h3>Stop ID: ' + stop.properties.Name   // 'stop_id' field of the dataset will become the title of the popup
+      popup.setHTML('<h3>' + stop.properties.Name   // 'stop_id' field of the dataset will become the title of the popup
                            + '</h3><p>' + stop.properties.Conditions // 'stop_name' field of the dataset will become the body of the popup
                            + '</p>');
 

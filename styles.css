@@ -94,6 +94,14 @@ h2 {
   font-weight: bold;
   font-style: normal;
 }
+
+h3 {
+  font-family: Source Sans Pro;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+
 /* Make the map full-width and full height */
 #map-container { 
   width: 100vw; 
@@ -209,17 +217,17 @@ h2 {
 }
 
 .mapboxgl-popup-content { 
-  background-color: rgba(135, 206, 250, 0.9);
-    border: 1px solid blue;
-    box-shadow: 3px 3px 8px rgba(0, 56, 125, 0.4);    
-    font-family: Courier;
+  background-color: white;
+    opacity: 0.9;
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.4);    
+    font-family: Source Sans Pro;
     font-size: larger;
-    color: blue;
+    color: black;
 }
 
 .mapboxgl-popup-close-button {
-    font-size: 30px;
-    color: blue;
+    font-size: 20px;
+    color: black;
 }
 
 /* About this Map Button */
